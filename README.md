@@ -8,6 +8,8 @@ workstation hosted in Microsoft Azure.
 To use this cookbook, do the following on your Chef workstation
 
 * Install the Chef Development Kit (Chef-DK)
+* Configure the workstation with a knife / Berkshelf configuration to
+  interact with a Chef Server
 * Use the following command to install the latest
   `chef-provisioning-azure` gem:
 
@@ -17,7 +19,8 @@ chef gem install chef-provisioning-azure
 
 ## Installation
 
-Install the cookbook on your workstation by cloning its repository:
+Install the cookbook on your workstation by cloning its repository
+under a subdirectory managed with your Chef Server's knife configuration:
 
 ```
 git clone https://github.com/adamedx/devstation
@@ -25,7 +28,7 @@ git clone https://github.com/adamedx/devstation
 
 ## Usage
 
-This cookbook creates a Chef Windows workstation on Azure bootstrapped
+This cookbook creates a Chef Windows workstation VM on Azure bootstrapped
 against your favorite Chef server. Use chef-client from that workstation to execute this cookbook's
 default recipe. The cookbook must be run on a Chef workstation that meets the prerequisites:
 
@@ -49,9 +52,23 @@ default recipe. The cookbook must be run on a Chef workstation that meets the pr
     option if there's a correctly configured .chef directory somewhere
     in the current path
 
-The chef-client run on the workstation will create a VM in Azure,
-bootstrap it against the Chef server in your knife.rb, run the
-configuration for the new workstation.
+The chef-client run on your Chef workstation will do the following:
+
+* Create a VM in Azure named `devstation` with a public DNS name of
+  `devstation.cloudapp.net` 
+* Bootstrap it against the Chef server in your `knife.rb`
+* Run the configuration for the new workstation
+
+## Customization
+
+As noted earlier, attributes and environment variables on the system
+running this cookbook  may be used to customize the cookbook's execution -- cookbook attributes always take
+precedence over environment variables:
+
+| Attribute | Environment Variable | Purpose |
+|-----------|----------------------|---------|
+| `user_secret` | `DEVSTATION_USER_SECRET` | Mandatory. The password for the user account `localadmin` that will be created on the VM and used to execute recipes during bootstrap  |
+| `storage_account` | `DEVSTATION_STORAGE_ACCOUNT` | Optional. By default, a new Azure storage account is created for the new VM, specify an existing account to use that instead |
 
 
 License and Authors
