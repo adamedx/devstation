@@ -20,7 +20,7 @@ chef gem install chef-provisioning-azure
 ## Installation
 
 Install the cookbook on your workstation by cloning its repository
-under a subdirectory managed with your Chef Server's knife configuration:
+under a subdirectory managed with your **Chef Server's knife configuration**:
 
 ```
 git clone https://github.com/adamedx/devstation
@@ -28,7 +28,7 @@ git clone https://github.com/adamedx/devstation
 
 ## Usage
 
-This cookbook creates a Chef Windows workstation VM on Azure bootstrapped
+This cookbook creates a Chef Windows workstation virtual machine (VM) on Azure bootstrapped
 against your favorite Chef server. Use chef-client from that workstation to execute this cookbook's
 default recipe. The cookbook must be run on a Chef workstation that meets the prerequisites:
 
@@ -44,20 +44,35 @@ default recipe. The cookbook must be run on a Chef workstation that meets the pr
 * Set the shell environment variable `DEVSTATION_STORAGE_ACCOUNT` to
   use an existing storage account.
 * Alternatively, each of the shell environment variables above has a
-  counterpart attribute, `user_secret` and `storage_account` respectively.
-* Run chef-client in local mode with this cookbook as the runlist:
-    `chef-client -z -o devstation -c YOUR_KNIFE_CONFIG`
-    where `YOUR_KNIFE_CONFIG` points to a knife config file that can
-    bootstrap a Chef node to some Chef server. You can ommit the last
-    option if there's a correctly configured .chef directory somewhere
-    in the current path
+  counterpart attribute, `user_secret` and `storage_account`
+  respectively; the attribute may be specified instead of the
+  environment variable.
+* Run chef-client in local mode from this cookbook's subdirectory with this cookbook as the runlist:
+    `chef-client -z -o devstation`
 
-The chef-client run on your Chef workstation will do the following:
+The last command  assumes that your knife configuration is in a path at or
+above the cookbook directory.
+
+### What it does
+
+The chef-client run with his cookbook on your Chef workstation will do the following:
 
 * Create a VM in Azure named `devstation` with a public DNS name of
   `devstation.cloudapp.net`
 * Bootstrap it against the Chef server in your `knife.rb`
-* Run the configuration for the new workstation
+* Run the configuration for the new workstation on the VM.
+
+### Refreshing cookbook dependencies
+
+The dependencies for this cookbook may change from time to time. You
+can refresh them using berkshelf, i.e.
+
+```
+berks vendor cookbooks
+```
+
+Dependencies such as the cookbooks used to provision the remote
+workstation can then be updated.
 
 ## Customization
 
