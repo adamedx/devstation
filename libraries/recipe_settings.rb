@@ -13,11 +13,28 @@
 # limitations under the License.
 
 class RecipeSettings
-  def self.attribute_or_env_variable(node, attribute_name, variable_name, default_value = nil)
-    result = node['devstation'][attribute_name]
+
+  def initialize(node)
+    @node = node
+    @settings = {
+      'user_secret' => [ 'DEVSTATION_USER_SECRET', nil ],
+      'storage_account' => [ 'DEVSTATION_STORAGE_ACCOUNT', nil ],
+      'workstation_name' => [ 'DEVSTATION_WORKSTATION_NAME', 'devstation' ],
+      'image_id' => [ 'DEVSTATION_IMAGE_ID', 'a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201502.01-en.us-127GB.vhd' ],
+      'location' => [ 'DEVSTATION_LOCATION', 'West US' ],
+      'vm_size' => [ 'DEVSTATION_VM_SIZE', 'Medium' ],
+      'tcp_endpoints' => [ 'DEVSTATION_TCP_ENDPOINTS', '' ],
+      'transport' => [ 'DEVSTATION_TRANSPORT', :winrm ],
+      'cloud_service' => [ nil, nil ]
+    }
+  end
+
+  def value_of(attribute_name, default_value = nil)
+    variable_name = @settings[attribute_name][0]
+    result = @node['devstation'][attribute_name]
 
     if result.nil? || result.length < 1
-      value = ENV[variable_name]
+      value = variable_name.nil? ? nil : ENV[variable_name]
       result = ( value.nil? || value.length <= 0 ) ? default_value : value
     end
     if result.nil?
@@ -26,7 +43,8 @@ class RecipeSettings
     result
   end
 
-  def self.validate_mandatory_setting!(node, attribute_name, variable_name)
-    value = attribute_or_env_variable(node, attribute_name, variable_name)
+  def validate_mandatory_setting!(attribute_name)
+    value_of(attribute_name)
   end
+
 end
