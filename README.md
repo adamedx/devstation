@@ -59,7 +59,7 @@ The chef-client run with his cookbook on your Chef workstation will do the follo
 
 * Create a VM in Azure named `devstation` with a public DNS name of
   `devstation.cloudapp.net`
-* Bootstrap it against the Chef server in your `knife.rb`
+* Bootstrap it against the Chef server specified in your `knife.rb`
 * Run the configuration for the new workstation on the VM.
 
 ### Refreshing cookbook dependencies
