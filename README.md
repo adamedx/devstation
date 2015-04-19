@@ -16,6 +16,8 @@ To use this cookbook, do the following on your Chef workstation
 ```
 chef gem install chef-provisioning-azure
 ```
+* Configure `chef-provisioning-azure` with your Azure subscription and
+associated credentials as described in the `chef-provisioning-azure` [documentation](https://github.com/chef/chef-provisioning-azure/blob/master/README.md).
 
 ## Installation
 
