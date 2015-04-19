@@ -29,6 +29,7 @@ with_chef_server ConfigWithoutLocalMode.workstation_config[:chef_server_url],
 with_driver 'azure'
 
 machine_name = settings.value_of('workstation_name', 'devstation')
+additional_run_list = settings.value_of('run_list', '').split(',')
 
 # These options configure a system with an admin user named
 # 'localadmin' and use that to bootstrap the system.
@@ -56,7 +57,9 @@ machine machine_name do
   machine_options azure_machine_options
   recipe 'devbox'
   recipe 'myemacs'
-  retries 3
+  additional_run_list.each do | element |
+    recipe element
+  end
 end
 
 

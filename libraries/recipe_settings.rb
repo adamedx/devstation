@@ -17,20 +17,21 @@ class RecipeSettings
   def initialize(node)
     @node = node
     @settings = {
-      'user_secret' => [ 'DEVSTATION_USER_SECRET', nil ],
-      'storage_account' => [ 'DEVSTATION_STORAGE_ACCOUNT', nil ],
-      'workstation_name' => [ 'DEVSTATION_WORKSTATION_NAME', 'devstation' ],
-      'image_id' => [ 'DEVSTATION_IMAGE_ID', 'a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201502.01-en.us-127GB.vhd' ],
-      'location' => [ 'DEVSTATION_LOCATION', 'West US' ],
-      'vm_size' => [ 'DEVSTATION_VM_SIZE', 'Medium' ],
-      'tcp_endpoints' => [ 'DEVSTATION_TCP_ENDPOINTS', '' ],
-      'transport' => [ 'DEVSTATION_TRANSPORT', :winrm ],
-      'cloud_service' => [ nil, nil ]
+      'user_secret' => 'DEVSTATION_USER_SECRET',
+      'storage_account' => 'DEVSTATION_STORAGE_ACCOUNT',
+      'workstation_name' => 'DEVSTATION_WORKSTATION_NAME',
+      'image_id' => 'DEVSTATION_IMAGE_ID',
+      'location' => 'DEVSTATION_LOCATION',
+      'vm_size' => 'DEVSTATION_VM_SIZE',
+      'tcp_endpoints' => 'DEVSTATION_TCP_ENDPOINTS',
+      'run_list' => 'DEVSTATION_RUN_LIST',
+      'transport' => 'DEVSTATION_TRANSPORT',
+      'cloud_service' => nil
     }
   end
 
   def value_of(attribute_name, default_value = nil)
-    variable_name = @settings[attribute_name][0]
+    variable_name = @settings[attribute_name]
     result = @node['devstation'][attribute_name]
 
     if result.nil? || result.length < 1
